@@ -1,62 +1,108 @@
-import React from 'react';
+import React, { useReducer } from "react";
 
-import './App.css';
+import "./App.css";
 
-import TotalDisplay from './components/TotalDisplay';
-import CalcButton from './components/CalcButton';
+import TotalDisplay from "./components/TotalDisplay";
+import CalcButton from "./components/CalcButton";
+import reducer, { initialState } from "./reducers/index";
+
+import {
+  applyNumber,
+  changeOperation,
+  clearDisplay,
+  memoryAdd,
+  memoryClear,
+  memoryPlus,
+} from "./actions/index";
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  // const handleAddOne = () => {
+  //   dispatch(addOne());
+  // };
+
+  const buttonHandler = (e) => {
+    dispatch(applyNumber(1));
+  };
+
+  const additionHandler = (e) => {
+    dispatch(changeOperation("+"));
+  };
+  const subtractionHandler = (e) => {
+    dispatch(changeOperation("-"));
+  };
+  const multiplicationHandler = (e) => {
+    dispatch(changeOperation("*"));
+  };
+  const clearHandler = () => {
+    dispatch(clearDisplay());
+  };
+  const memoryPlusHandler = () => {
+    dispatch(memoryPlus());
+  };
+  const memoryAddHandler = () => {
+    dispatch(memoryAdd());
+  };
+  const memoryclearHandler = () => {
+    dispatch(memoryClear());
+  };
 
   return (
     <div className="App">
       <nav className="navbar navbar-dark bg-dark">
-        <a className="navbar-brand" href="#"><img width="40px" src="./Lambda-Logo-Red.png"/> Lambda Reducer Challenge</a>
+        <a className="navbar-brand" href="#">
+          <img width="40px" src="./Lambda-Logo-Red.png" /> Lambda Reducer
+          Challenge
+        </a>
       </nav>
 
-      <div className = "container row mt-5">
+      <div className="container row mt-5">
         <div className="col-md-12 d-flex justify-content-center">
           <form name="Cal">
-            
-            <TotalDisplay value={0}/>
+            <TotalDisplay value={state.total} />
             <div className="row details">
-              <span id="operation"><b>Operation:</b> X</span>
-              <span id="memory"><b>Memory:</b> 0</span>
-            </div>
-            
-            <div className="row">
-              <CalcButton value={"M+"}/>
-              <CalcButton value={"MR"}/>
-              <CalcButton value={"MC"}/>
+              <span id="operation">
+                <b>Operation:</b> {state.operation}
+              </span>
+              <span id="memory">
+                <b>Memory:</b> {state.memory}
+              </span>
             </div>
 
             <div className="row">
-              <CalcButton value={1}/>
-              <CalcButton value={2}/>
-              <CalcButton value={3}/>
+              <CalcButton value={"M+"} onClick={memoryPlusHandler} />
+              <CalcButton value={"MR"} onClick={memoryAddHandler} />
+              <CalcButton value={"MC"} onClick={memoryclearHandler} />
             </div>
 
             <div className="row">
-              <CalcButton value={4}/>
-              <CalcButton value={5}/>
-              <CalcButton value={6}/>
+              <CalcButton value={1} onClick={buttonHandler} />
+              <CalcButton value={2} />
+              <CalcButton value={3} />
             </div>
 
             <div className="row">
-              <CalcButton value={7}/>
-              <CalcButton value={8}/>
-              <CalcButton value={9}/>
+              <CalcButton value={4} />
+              <CalcButton value={5} />
+              <CalcButton value={6} />
             </div>
 
             <div className="row">
-              <CalcButton value={"+"}/>
-              <CalcButton value={"*"}/>
-              <CalcButton value={"-"}/>
+              <CalcButton value={7} />
+              <CalcButton value={8} />
+              <CalcButton value={9} />
+            </div>
+
+            <div className="row">
+              <CalcButton value={"+"} onClick={additionHandler} />
+              <CalcButton value={"*"} onClick={multiplicationHandler} />
+              <CalcButton value={"-"} onClick={subtractionHandler} />
             </div>
 
             <div className="row ce_button">
-              <CalcButton value={"CE"}/>
+              <CalcButton value={"CE"} onClick={clearHandler} />
             </div>
-
           </form>
         </div>
       </div>
